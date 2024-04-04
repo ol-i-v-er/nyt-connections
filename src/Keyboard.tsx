@@ -28,6 +28,7 @@ const KEYS = [
   "x",
   "y",
   "z",
+  "_",
 ]
 
 type KeyboardProps = {

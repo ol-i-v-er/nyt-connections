@@ -34,7 +34,7 @@ function App() {
     const handler = (e: KeyboardEvent) => {
       const key = e.key
 
-      if (!key.match(/^[a-z]$/)) return
+      if (!key.match(/^[a-z ]$/)) return
 
       e.preventDefault()
       addGuessedLetter(key)
