@@ -1,3 +1,4 @@
+import { boolean } from "yargs"
 import styles from "./Keyboard.module.css"
 
 const KEYS = [
@@ -29,7 +30,14 @@ const KEYS = [
   "z",
 ]
 
-export function Keyboard() {
+type KeyboardProps = {
+  disabled?: boolean
+  activeLetters: string[]
+  inactiveLetters: string[]
+    addGuessedLetter: (letter: string) => void
+}
+
+export function Keyboard({ activeLetters, inactiveLetters, addGuessedLetter, disabled = false }: KeyboardProps) {
   return (
     <div
       style={{
@@ -39,8 +47,18 @@ export function Keyboard() {
       }}
     >
       {KEYS.map((key) => {
+        const isActive = activeLetters.includes(key)
+        const isInactive = inactiveLetters.includes(key)
         return (
-          <button className={styles.btn} key={key}>
+          <button 
+            onClick={() => addGuessedLetter(key)}
+            className={ `${styles.btn} ${isActive ? styles.active : ""}
+            ${
+              isInactive ? styles.inactive : ""
+            }`}
+            disabled={isInactive || isActive || disabled}
+            key={key}
+          >
             {key}
           </button>
         )

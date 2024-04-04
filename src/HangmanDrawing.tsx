@@ -29,61 +29,63 @@ const TORSO = (
   />
 )
 
-const ARMS = (
-  <div>
-    <div
-      style={{
-        width: "10px",
-        height: "75px",
-        background: "black",
-        position: "absolute",
-        top: "110px",
-        right: "-20px",
-        rotate: "-30deg",
-      }}
-    />
-    <div
-      style={{
-        width: "10px",
-        height: "75px",
-        background: "black",
-        position: "absolute",
-        top: "110px",
-        right: "20px",
-        rotate: "30deg",
-      }}
-    />
-  </div>
+const ARM_LEFT = (
+  <div
+    style={{
+      width: "10px",
+      height: "75px",
+      background: "black",
+      position: "absolute",
+      top: "110px",
+      right: "-20px",
+      rotate: "-30deg",
+    }}
+  />
 )
 
-const LEGS = (
-  <div>
-    <div
-      style={{
-        width: "10px",
-        height: "75px",
-        background: "black",
-        position: "absolute",
-        top: "230px",
-        right: "-20px",
-        rotate: "-30deg",
-      }}
-    />
-    <div
-      style={{
-        width: "10px",
-        height: "75px",
-        background: "black",
-        position: "absolute",
-        top: "230px",
-        right: "20px",
-        rotate: "30deg",
-      }}
-    />
-  </div>
+const ARM_RIGHT = (
+  <div
+    style={{
+      width: "10px",
+      height: "75px",
+      background: "black",
+      position: "absolute",
+      top: "110px",
+      right: "20px",
+      rotate: "30deg",
+    }}
+  />
 )
 
-const BODY_PARTS = [HEAD, TORSO, ARMS, LEGS]
+const LEG_LEFT = (
+  <div
+    style={{
+      width: "10px",
+      height: "75px",
+      background: "black",
+      position: "absolute",
+      top: "230px",
+      right: "-20px",
+      rotate: "-30deg",
+    }}
+  />
+)
+
+const LEG_RIGHT = (
+  <div
+    style={{
+      width: "10px",
+      height: "75px",
+      background: "black",
+      position: "absolute",
+      top: "230px",
+      right: "20px",
+      rotate: "30deg",
+    }}
+  />
+)
+
+const BODY_PARTS = [HEAD, TORSO, ARM_LEFT, ARM_RIGHT, LEG_LEFT, LEG_RIGHT]
 
 type HangmanDrawingProps = {
   numberOfGuesses: number
