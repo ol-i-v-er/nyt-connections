@@ -31,6 +31,36 @@ const KEYS = [
   " ",
 ]
 
+const KEYS2 = [
+  "q",
+  "w",
+  "e",
+  "r",
+  "t",
+  "y",
+  "u",
+  "i",
+  "o",
+  "p",
+  "a",
+  "s",
+  "d",
+  "f",
+  "g",
+  "h",
+  "j",
+  "k",
+  "l",
+  "z",
+  "x",
+  "c",
+  "v",
+  "b",
+  "n",
+  "m",
+  " ",
+]
+
 type KeyboardProps = {
   disabled?: boolean
   activeLetters: string[]
@@ -48,11 +78,13 @@ export function Keyboard({
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(75px, 1fr))",
-        gap: ".5rem",
+        //gridTemplateColumns: "repeat(auto-fit, minmax(75px, 1fr))",
+        gridTemplateColumns: "repeat(10, 60px)",
+        gridTemplateRows: "repeat(5)",
+        gap: "0.2rem",
       }}
     >
-      {KEYS.map((key) => {
+      {KEYS2.map((key) => {
         const isActive = activeLetters.includes(key)
         const isInactive = inactiveLetters.includes(key)
         return (

@@ -49,27 +49,29 @@ export function HangmanApp() {
 
   console.log(wordToGuess)
   return (
-    <div
-      style={{
-        maxWidth: "800px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "2rem",
-        margin: "0 auto",
-        alignItems: "center",
-      }}
-    >
-      <div style={{ fontSize: "2rem", textAlign: "center" }}>
-        {isWinner && "Winner!"}
-        {isLoser && "Loser!"}
+    <div style={{ width: "800px" }}>
+      <div
+        style={{
+          maxWidth: "800px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "2rem",
+          margin: "0 auto",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ fontSize: "2rem", textAlign: "center" }}>
+          {isWinner && "Winner!"}
+          {isLoser && "Loser!"}
+        </div>
+        <HangmanDrawing numberOfGuesses={incorrectLetters.length} />
+        <HangmanWord
+          reveal={isLoser}
+          guessedLetters={guessedLetters}
+          wordToGuess={wordToGuess}
+        />
       </div>
-      <HangmanDrawing numberOfGuesses={incorrectLetters.length} />
-      <HangmanWord
-        reveal={isLoser}
-        guessedLetters={guessedLetters}
-        wordToGuess={wordToGuess}
-      />
-      <div style={{ alignSelf: "stretch" }}>
+      <div style={{ alignSelf: "stretch", marginTop: "10px" }}>
         <Keyboard
           disabled={isWinner || isLoser}
           activeLetters={guessedLetters.filter((letter) =>

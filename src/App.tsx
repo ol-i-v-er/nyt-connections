@@ -1,7 +1,20 @@
-import React from "react"
+import React, { useState } from "react"
 import { HangmanApp } from "./HangmanApp"
+import { WordleApp } from "./WordleApp"
 
 function App() {
+  const [showHangman, setShowHangman] = useState(false)
+  const [showWordle, setShowWordle] = useState(false)
+
+  const hangmanClick = () => {
+    setShowHangman(true)
+    setShowWordle(false)
+  }
+  const wordleClick = () => {
+    setShowWordle(true)
+    setShowHangman(false)
+  }
+
   return (
     <div
       style={{
@@ -13,20 +26,10 @@ function App() {
         alignItems: "center",
       }}
     >
-      <button
-        onClick={() => {
-          HangmanApp()
-        }}
-      >
-        Hangman
-      </button>
-      <button
-        onClick={() => {
-          HangmanApp()
-        }}
-      >
-        Wordle
-      </button>
+      <button onClick={() => hangmanClick()}>Hangman</button>
+      <button onClick={() => wordleClick()}></button>
+      {showWordle && <WordleApp />}
+      {showHangman && <HangmanApp />}
     </div>
   )
 }

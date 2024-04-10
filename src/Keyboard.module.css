@@ -1,7 +1,8 @@
 .btn {
   width: 100%;
   border: 3px solid black;
-  background: none;
+  border-radius: 5px;
+  background-color: rgb(230, 230, 230);
   aspect-ratio: 1 / 1;
   font-size: 2.5rem;
   text-transform: uppercase;
