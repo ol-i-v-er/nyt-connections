@@ -27,7 +27,7 @@ function App() {
       }}
     >
       <button onClick={() => hangmanClick()}>Hangman</button>
-      <button onClick={() => wordleClick()}></button>
+      <button onClick={() => wordleClick()}>GPASOKJA</button>
       {showWordle && <WordleApp />}
       {showHangman && <HangmanApp />}
     </div>
