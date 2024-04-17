@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { HangmanApp } from "./HangmanApp"
 import { ConnectionsApp } from "./ConnectionsApp"
+import styles from "./Connections.module.css"
 
 function App() {
   const [showHangman, setShowHangman] = useState(false)
@@ -26,8 +27,10 @@ function App() {
         alignItems: "center",
       }}
     >
-      <button onClick={() => hangmanClick()}>Hangman</button>
-      <button onClick={() => ConnectionsClick()}>GPASOKJA</button>
+      <div style={{width: "500px", marginTop: "10px", textAlign: "center"}}>
+        <button className={`${styles.btnGeneral}`} onClick={() => hangmanClick()}>Hangman</button>
+        <button className={`${styles.btnGeneral}`} onClick={() => ConnectionsClick()}>Connections</button>
+      </div>
       {showConnections && <ConnectionsApp />}
       {showHangman && <HangmanApp />}
     </div>
