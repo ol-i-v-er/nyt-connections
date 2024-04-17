@@ -1,17 +1,17 @@
 import React, { useState } from "react"
 import { HangmanApp } from "./HangmanApp"
-import { WordleApp } from "./WordleApp"
+import { ConnectionsApp } from "./ConnectionsApp"
 
 function App() {
   const [showHangman, setShowHangman] = useState(false)
-  const [showWordle, setShowWordle] = useState(false)
+  const [showConnections, setShowConnections] = useState(false)
 
   const hangmanClick = () => {
     setShowHangman(true)
-    setShowWordle(false)
+    setShowConnections(false)
   }
-  const wordleClick = () => {
-    setShowWordle(true)
+  const ConnectionsClick = () => {
+    setShowConnections(true)
     setShowHangman(false)
   }
 
@@ -27,8 +27,8 @@ function App() {
       }}
     >
       <button onClick={() => hangmanClick()}>Hangman</button>
-      <button onClick={() => wordleClick()}>GPASOKJA</button>
-      {showWordle && <WordleApp />}
+      <button onClick={() => ConnectionsClick()}>GPASOKJA</button>
+      {showConnections && <ConnectionsApp />}
       {showHangman && <HangmanApp />}
     </div>
   )
