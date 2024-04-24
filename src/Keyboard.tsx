@@ -1,35 +1,4 @@
-import { boolean } from "yargs"
 import styles from "./Keyboard.module.css"
-
-const KEYS2 = [
-  "q",
-  "w",
-  "e",
-  "r",
-  "t",
-  "y",
-  "u",
-  "i",
-  "o",
-  "p",
-  "a",
-  "s",
-  "d",
-  "f",
-  "g",
-  "h",
-  "j",
-  "k",
-  "l",
-  "z",
-  "x",
-  "c",
-  "v",
-  "b",
-  "n",
-  "m",
-  " ",
-]
 
 type KeyboardProps = {
   disabled?: boolean
