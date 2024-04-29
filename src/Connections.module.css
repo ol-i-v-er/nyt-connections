@@ -9,11 +9,25 @@
   font-weight: bold;
   cursor: pointer;
   color: black;
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .btnGrid.active {
   background-color: #5c5252;
   color: white;
+}
+
+.btnGrid:active {
+  transform: scale(0.94);
 }
 
 .btnGrid.inactive {
@@ -30,10 +44,15 @@
   margin: 3px;
   font-size: 0.8rem;
   font-weight: bold;
-  cursor: pointer;
+  cursor: default;
   color: black;
 }
 
-.btnGeneral:hover {
+.btnGeneral.inactive {
+  opacity: 0.3;
+}
+
+.btnGeneral:hover:not(:disabled) {
   background-color: #f1f2ea;
+  cursor: pointer;
 }

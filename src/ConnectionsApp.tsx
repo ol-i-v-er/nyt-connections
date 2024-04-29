@@ -1,12 +1,104 @@
-import {
-  ConnectionsGrid,
-  shuffleGrid,
-  submitGuess,
-  deselectAll,
-} from "./ConnectionsGrid"
+import { useState, useEffect } from "react"
+import { ConnectionsGrid } from "./ConnectionsGrid"
 import styles from "./Connections.module.css"
 
+type WordProps = {
+  word: string
+}
+
 export function ConnectionsApp() {
+  const [words, setWords] = useState<string[][]>([
+    ["AA", "AB", "AC", "AD"],
+    ["BA", "BB", "BC", "BD"],
+    ["CA", "CB", "CC", "CD"],
+    ["DA", "DB", "DC", "DD"],
+  ])
+
+  const [selectedWords, setSelectedWords] = useState<string[]>([])
+  let [selectedFull, setSelectedFull] = useState<boolean>(false)
+  const isInactiveDS = selectedWords.length === 0
+  const isInactiveS = selectedWords.length !== 4
+
+  function handleButtonClick({ word }: WordProps) {
+    checkClick({ word: word })
+  }
+
+  function checkClick({ word }: WordProps) {
+    if (selectedWords.includes(word)) {
+      return removeSelectedWord({ word: word })
+    } else if (selectedWords.length >= 4) {
+      return setSelectedFull(true)
+    }
+    return addSelectedWord({ word: word })
+  }
+
+  function addSelectedWord({ word }: WordProps) {
+    setSelectedWords((currentWords) => [...currentWords, word])
+  }
+
+  function removeSelectedWord({ word }: WordProps) {
+    const index = selectedWords.indexOf(word)
+    if (index > -1) {
+      setSelectedWords(
+        selectedWords.filter((currentWords) => currentWords !== word)
+      )
+      setSelectedFull(false)
+    }
+  }
+
+  useEffect(() => {
+    if (selectedWords.length >= 4) {
+      setSelectedFull(true)
+    }
+  }, [selectedWords, selectedFull])
+
+  function shuffleGrid() {
+    const wordsCopy = words.map((subArray) => [...subArray]) // Create a deep copy of the 2D array
+
+    for (let i = wordsCopy.length - 1; i > 0; i--) {
+      for (let j = wordsCopy[i].length - 1; j > 0; j--) {
+        const i2 = Math.floor(Math.random() * (i + 1))
+        const j2 = Math.floor(Math.random() * (j + 1))
+
+        // Swap elements
+        ;[wordsCopy[i][j], wordsCopy[i2][j2]] = [
+          wordsCopy[i2][j2],
+          wordsCopy[i][j],
+        ]
+      }
+    }
+
+    setWords(wordsCopy) // Update state with the shuffled 2D array
+  }
+
+  function submitGuess() {
+    const selectedWordsGuess = selectedWords
+    const wordsCopy = words
+    let match = false
+    let matchCount = 0
+
+    selectedWordsGuess.sort()
+    for (let i = 0; i < words.length; i++) {
+      wordsCopy[i].sort()
+    }
+
+    for (let i = 0; i < words[0].length; i++) {
+      for (let x = 0; x < words.length; x++) {
+        console.log(wordsCopy[x] + " words")
+        console.log(selectedWordsGuess + " selected words")
+        if (selectedWordsGuess[x] === wordsCopy[i][x]) matchCount++
+        console.log(matchCount)
+        if (matchCount === 4) match = true
+      }
+    }
+    return match ? console.log("yay") : console.log("noo")
+  }
+
+  function deselectAll() {
+    setSelectedWords([])
+    setSelectedFull(false)
+  }
+
   return (
     <div
       style={{
@@ -17,7 +109,13 @@ export function ConnectionsApp() {
       }}
     >
       <div>
-        <ConnectionsGrid />
+        <ConnectionsGrid
+          selectedWords={selectedWords}
+          selectedFull={selectedFull}
+          handleButtonClick={handleButtonClick}
+          words={words}
+          shuffleGrid={shuffleGrid}
+        />
       </div>
       <div style={{ display: "flex", marginTop: "10px" }}>
         <div style={{ fontSize: "1.5rem" }}>Mistakes Remaining:</div>
@@ -28,18 +126,24 @@ export function ConnectionsApp() {
       <div style={{ width: "300px", marginTop: "10px", textAlign: "center" }}>
         <button
           onClick={() => shuffleGrid()}
-          className={`${styles.btnGeneral}`}
+          className={`${styles.btnGeneral} `}
         >
           Shuffle
         </button>
         <button
-          className={`${styles.btnGeneral}`}
+          className={`${styles.btnGeneral} ${
+            isInactiveDS ? styles.inactive : ""
+          } `}
+          disabled={isInactiveDS}
           onClick={() => deselectAll()}
         >
           Deselect All
         </button>
         <button
-          className={`${styles.btnGeneral}`}
+          className={`${styles.btnGeneral} ${
+            isInactiveS ? styles.inactive : ""
+          }`}
+          disabled={isInactiveS}
           onClick={() => submitGuess()}
         >
           Submit
