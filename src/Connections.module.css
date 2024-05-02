@@ -10,6 +10,7 @@
   cursor: pointer;
   color: black;
   animation: fadeIn 0.5s;
+  transition: all 0.2s ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -27,11 +28,11 @@
 }
 
 .btnGrid:active {
-  transform: scale(0.94);
+  transform: scale(0.9);
 }
 
 .btnGrid.inactive {
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 .btnGeneral {

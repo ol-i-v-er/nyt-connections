@@ -27,9 +27,19 @@ function App() {
         alignItems: "center",
       }}
     >
-      <div style={{width: "500px", marginTop: "10px", textAlign: "center"}}>
-        <button className={`${styles.btnGeneral}`} onClick={() => hangmanClick()}>Hangman</button>
-        <button className={`${styles.btnGeneral}`} onClick={() => ConnectionsClick()}>Connections</button>
+      <div style={{ width: "500px", marginTop: "10px", textAlign: "center" }}>
+        <button
+          className={`${styles.btnGeneral}`}
+          onClick={() => hangmanClick()}
+        >
+          Hangman
+        </button>
+        <button
+          className={`${styles.btnGeneral}`}
+          onClick={() => ConnectionsClick()}
+        >
+          Relations
+        </button>
       </div>
       {showConnections && <ConnectionsApp />}
       {showHangman && <HangmanApp />}

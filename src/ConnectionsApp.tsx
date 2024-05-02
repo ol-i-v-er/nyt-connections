@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { ConnectionsGrid } from "./ConnectionsGrid"
+import { ConnectionsDots } from "./ConnectionsDots"
 import styles from "./Connections.module.css"
 
 type WordProps = {
@@ -14,10 +15,18 @@ export function ConnectionsApp() {
     ["DA", "DB", "DC", "DD"],
   ])
 
+  const wordsCopy = [
+    ["AA", "AB", "AC", "AD"],
+    ["BA", "BB", "BC", "BD"],
+    ["CA", "CB", "CC", "CD"],
+    ["DA", "DB", "DC", "DD"],
+  ]
+
   const [selectedWords, setSelectedWords] = useState<string[]>([])
   let [selectedFull, setSelectedFull] = useState<boolean>(false)
   const isInactiveDS = selectedWords.length === 0
   const isInactiveS = selectedWords.length !== 4
+  let [mistakesLeft, setMistakesLeft] = useState<number>(4)
 
   function handleButtonClick({ word }: WordProps) {
     checkClick({ word: word })
@@ -53,14 +62,13 @@ export function ConnectionsApp() {
   }, [selectedWords, selectedFull])
 
   function shuffleGrid() {
-    const wordsCopy = words.map((subArray) => [...subArray]) // Create a deep copy of the 2D array
+    const wordsCopy = words.map((subArray) => [...subArray])
 
     for (let i = wordsCopy.length - 1; i > 0; i--) {
       for (let j = wordsCopy[i].length - 1; j > 0; j--) {
         const i2 = Math.floor(Math.random() * (i + 1))
         const j2 = Math.floor(Math.random() * (j + 1))
 
-        // Swap elements
         ;[wordsCopy[i][j], wordsCopy[i2][j2]] = [
           wordsCopy[i2][j2],
           wordsCopy[i][j],
@@ -68,14 +76,12 @@ export function ConnectionsApp() {
       }
     }
 
-    setWords(wordsCopy) // Update state with the shuffled 2D array
+    setWords(wordsCopy)
   }
 
   function submitGuess() {
-    const selectedWordsGuess = selectedWords
-    const wordsCopy = words
+    const selectedWordsGuess = [...selectedWords]
     let match = false
-    let matchCount = 0
 
     selectedWordsGuess.sort()
     for (let i = 0; i < words.length; i++) {
@@ -83,15 +89,34 @@ export function ConnectionsApp() {
     }
 
     for (let i = 0; i < words[0].length; i++) {
-      for (let x = 0; x < words.length; x++) {
-        console.log(wordsCopy[x] + " words")
-        console.log(selectedWordsGuess + " selected words")
-        if (selectedWordsGuess[x] === wordsCopy[i][x]) matchCount++
-        console.log(matchCount)
-        if (matchCount === 4) match = true
-      }
+      if (JSON.stringify(wordsCopy[i]) === JSON.stringify(selectedWordsGuess))
+        match = true
     }
-    return match ? console.log("yay") : console.log("noo")
+
+    if (match) {
+      correct()
+    } else {
+      incorrect()
+    }
+  }
+
+  function correct() {
+    for (let i = 0; i < selectedWords.length; i++) {
+      console.log(
+        words[i].filter((currentWords) =>
+          currentWords.includes(selectedWords[i])
+        )
+      )
+
+      setWords(
+        words.filter((currentWords) => !currentWords.includes(selectedWords[i]))
+      )
+    }
+    deselectAll()
+  }
+
+  function incorrect() {
+    setMistakesLeft(mistakesLeft--)
   }
 
   function deselectAll() {
@@ -120,13 +145,13 @@ export function ConnectionsApp() {
       <div style={{ display: "flex", marginTop: "10px" }}>
         <div style={{ fontSize: "1.5rem" }}>Mistakes Remaining:</div>
         <div style={{ marginTop: "5px" }}>
-          <Dots />
+          <ConnectionsDots mistakesLeft={mistakesLeft} />
         </div>
       </div>
       <div style={{ width: "300px", marginTop: "10px", textAlign: "center" }}>
         <button
           onClick={() => shuffleGrid()}
-          className={`${styles.btnGeneral} `}
+          className={`${styles.btnGeneral}`}
         >
           Shuffle
         </button>
@@ -149,29 +174,6 @@ export function ConnectionsApp() {
           Submit
         </button>
       </div>
-    </div>
-  )
-}
-
-const numOfDots = 4
-const dotsArray = Array.from({ length: numOfDots }, (_, index) => index)
-
-function Dots() {
-  return (
-    <div>
-      {dotsArray.map((_, index) => (
-        <div
-          key={index}
-          style={{
-            height: "25px",
-            width: "25px",
-            backgroundColor: "#737373",
-            borderRadius: "50%",
-            display: "inline-block",
-            marginLeft: "10px",
-          }}
-        ></div>
-      ))}
     </div>
   )
 }
