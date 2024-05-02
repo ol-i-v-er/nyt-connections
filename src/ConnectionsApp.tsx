@@ -27,6 +27,7 @@ export function ConnectionsApp() {
   const isInactiveDS = selectedWords.length === 0
   const isInactiveS = selectedWords.length !== 4
   let [mistakesLeft, setMistakesLeft] = useState<number>(4)
+  let lose = false
 
   function handleButtonClick({ word }: WordProps) {
     checkClick({ word: word })
@@ -80,6 +81,7 @@ export function ConnectionsApp() {
   }
 
   function submitGuess() {
+    console.log(selectedWords)
     const selectedWordsGuess = [...selectedWords]
     let match = false
 
@@ -88,7 +90,7 @@ export function ConnectionsApp() {
       wordsCopy[i].sort()
     }
 
-    for (let i = 0; i < words[0].length; i++) {
+    for (let i = 0; i < words.length; i++) {
       if (JSON.stringify(wordsCopy[i]) === JSON.stringify(selectedWordsGuess))
         match = true
     }
@@ -101,23 +103,20 @@ export function ConnectionsApp() {
   }
 
   function correct() {
-    for (let i = 0; i < selectedWords.length; i++) {
-      console.log(
-        words[i].filter((currentWords) =>
-          currentWords.includes(selectedWords[i])
-        )
-      )
-
-      setWords(
-        words.filter((currentWords) => !currentWords.includes(selectedWords[i]))
-      )
-    }
+    setWords(words.map(innerArr => innerArr.filter(value => !selectedWords.includes(value))))
     deselectAll()
   }
 
   function incorrect() {
-    setMistakesLeft(mistakesLeft--)
+    setMistakesLeft(mistakesLeft-=1)
+    deselectAll()
   }
+
+  useEffect(() => {
+    if(mistakesLeft === 0) {
+      lose = true
+    }
+  },[mistakesLeft])
 
   function deselectAll() {
     setSelectedWords([])

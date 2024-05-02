@@ -7,11 +7,11 @@ function App() {
   const [showHangman, setShowHangman] = useState(false)
   const [showConnections, setShowConnections] = useState(false)
 
-  const hangmanClick = () => {
+  function hangmanClick() {
     setShowHangman(true)
     setShowConnections(false)
   }
-  const ConnectionsClick = () => {
+  function ConnectionsClick() {
     setShowConnections(true)
     setShowHangman(false)
   }
@@ -38,7 +38,7 @@ function App() {
           className={`${styles.btnGeneral}`}
           onClick={() => ConnectionsClick()}
         >
-          Relations
+          Connections
         </button>
       </div>
       {showConnections && <ConnectionsApp />}
