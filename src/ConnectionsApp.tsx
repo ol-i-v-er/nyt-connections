@@ -63,21 +63,21 @@ export function ConnectionsApp() {
   }, [selectedWords, selectedFull])
 
   function shuffleGrid() {
-    const wordsCopy = words.map((subArray) => [...subArray])
+    const wordsCopyShuf = words.map((subArray) => [...subArray])
 
-    for (let i = wordsCopy.length - 1; i > 0; i--) {
-      for (let j = wordsCopy[i].length - 1; j > 0; j--) {
+    for (let i = wordsCopyShuf.length - 1; i > 0; i--) {
+      for (let j = wordsCopyShuf[i].length - 1; j > 0; j--) {
         const i2 = Math.floor(Math.random() * (i + 1))
         const j2 = Math.floor(Math.random() * (j + 1))
 
-        ;[wordsCopy[i][j], wordsCopy[i2][j2]] = [
-          wordsCopy[i2][j2],
-          wordsCopy[i][j],
+        ;[wordsCopyShuf[i][j], wordsCopyShuf[i2][j2]] = [
+          wordsCopyShuf[i2][j2],
+          wordsCopyShuf[i][j],
         ]
       }
     }
 
-    setWords(wordsCopy)
+    setWords(wordsCopyShuf)
   }
 
   function submitGuess() {
@@ -103,20 +103,38 @@ export function ConnectionsApp() {
   }
 
   function correct() {
-    setWords(words.map(innerArr => innerArr.filter(value => !selectedWords.includes(value))))
+    setWords(
+      words.map((innerArr) =>
+        innerArr.filter((value) => !selectedWords.includes(value))
+      )
+    )
     deselectAll()
   }
 
+  function removeSpace() {
+    for (let i = 0; i < words.length; i++) {
+      if (words[i].length < 4) {
+        for (let j = 0; j < words[i].length; j++) {
+          words[i].push(words[i + 1].pop)
+        }
+      }
+    }
+  }
+
+  useEffect(() => {
+    removeSpace()
+  }, [words])
+
   function incorrect() {
-    setMistakesLeft(mistakesLeft-=1)
+    setMistakesLeft((mistakesLeft -= 1))
     deselectAll()
   }
 
   useEffect(() => {
-    if(mistakesLeft === 0) {
+    if (mistakesLeft === 0) {
       lose = true
     }
-  },[mistakesLeft])
+  }, [mistakesLeft])
 
   function deselectAll() {
     setSelectedWords([])
