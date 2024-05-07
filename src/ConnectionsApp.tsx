@@ -8,11 +8,11 @@ type WordProps = {
 }
 
 export function ConnectionsApp() {
-  const [words, setWords] = useState<string[][]>([
-    ["AA", "AB", "AC", "AD"],
-    ["BA", "BB", "BC", "BD"],
-    ["CA", "CB", "CC", "CD"],
-    ["DA", "DB", "DC", "DD"],
+  const [words, setWords] = useState<string[]>([
+    "AA", "AB", "AC", "AD",
+    "BA", "BB", "BC", "BD",
+    "CA", "CB", "CC", "CD",
+    "DA", "DB", "DC", "DD"
   ])
 
   const wordsCopy = [
@@ -28,6 +28,7 @@ export function ConnectionsApp() {
   const isInactiveS = selectedWords.length !== 4
   let [mistakesLeft, setMistakesLeft] = useState<number>(4)
   let lose = false
+  let [correct1, setCorrect1] = useState<boolean>(true)
 
   function handleButtonClick({ word }: WordProps) {
     checkClick({ word: word })
@@ -63,18 +64,15 @@ export function ConnectionsApp() {
   }, [selectedWords, selectedFull])
 
   function shuffleGrid() {
-    const wordsCopyShuf = words.map((subArray) => [...subArray])
+    const wordsCopyShuf = JSON.parse(JSON.stringify(words));
 
     for (let i = wordsCopyShuf.length - 1; i > 0; i--) {
-      for (let j = wordsCopyShuf[i].length - 1; j > 0; j--) {
-        const i2 = Math.floor(Math.random() * (i + 1))
-        const j2 = Math.floor(Math.random() * (j + 1))
+      const i2 = Math.floor(Math.random() * (i + 1))
 
-        ;[wordsCopyShuf[i][j], wordsCopyShuf[i2][j2]] = [
-          wordsCopyShuf[i2][j2],
-          wordsCopyShuf[i][j],
-        ]
-      }
+      ;[wordsCopyShuf[i], wordsCopyShuf[i2]] = [
+        wordsCopyShuf[i2],
+        wordsCopyShuf[i],
+      ]
     }
 
     setWords(wordsCopyShuf)
@@ -86,7 +84,7 @@ export function ConnectionsApp() {
     let match = false
 
     selectedWordsGuess.sort()
-    for (let i = 0; i < words.length; i++) {
+    for (let i = 0; i < wordsCopy.length; i++) {
       wordsCopy[i].sort()
     }
 
@@ -103,18 +101,8 @@ export function ConnectionsApp() {
   }
 
   function correct() {
-    let temp:string[][] = []
-    for (let i = 0; i < words.length; i++) {
-      let filteredWords = words[i].filter(word => !selectedWords.includes(word));
-      temp.push(filteredWords)
-    }
-    for (let i = temp.length; i >= 0; i--) {
-      if(temp[i].length < 4 && i > 0) {
-        temp.push(temp[i - 1].pop())
-      }
-    }
-
-    setWords(temp)
+    setWords(words.filter(word => !selectedWords.includes(word)))
+    correct1 = true
     deselectAll()
   }
 

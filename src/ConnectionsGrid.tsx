@@ -8,7 +8,7 @@ type ConnectionsGridProps = {
   selectedWords: string[]
   selectedFull: boolean
   handleButtonClick: ({ word }: WordProps) => void
-  words: string[][]
+  words: string[]
   shuffleGrid: () => void
 }
 
@@ -21,32 +21,30 @@ export function ConnectionsGrid({
 }: ConnectionsGridProps) {
   return (
     <div>
-      {words.map((row, rowIndex) => (
-        <div
-          key={rowIndex}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, minmax(200px, 1fr))",
-            gap: "0.6rem",
-          }}
-        >
-          {row.map((cell, colIndex) => {
-            const isActive = selectedWords.includes(cell)
-            const isInactive = !selectedWords.includes(cell) && selectedFull
-            return (
-              <button
-                key={colIndex}
-                onClick={() => handleButtonClick({ word: cell })}
-                className={`${styles.btnGrid} 
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, minmax(200px, 1fr))",
+          gap: "0.6rem",
+        }}
+      >
+        {words.map((cell, index) => {
+          const isActive = selectedWords.includes(cell);
+          const isInactive = !selectedWords.includes(cell) && selectedFull;
+          return (
+            <button
+              key={index}
+              onClick={() => handleButtonClick({ word: cell })}
+              className={`${styles.btnGrid} 
                 ${isActive ? styles.active : ""} 
                 ${isInactive ? styles.inactive : ""}`}
-              >
-                {cell}
-              </button>
-            )
-          })}
-        </div>
-      ))}
+            >
+              {cell}
+            </button>
+          );
+        })}
+      </div>
     </div>
-  )
+  );
+  
 }
