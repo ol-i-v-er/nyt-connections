@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { ConnectionsGrid } from "./ConnectionsGrid"
 import { ConnectionsDots } from "./ConnectionsDots"
+import { CorrectDisplay } from "./CorrectDisplays"
 import styles from "./Connections.module.css"
 
 type WordProps = {
@@ -28,7 +29,7 @@ export function ConnectionsApp() {
   const isInactiveS = selectedWords.length !== 4
   let [mistakesLeft, setMistakesLeft] = useState<number>(4)
   let lose = false
-  let [correct1, setCorrect1] = useState<boolean>(true)
+  let [correctDisplayBool, setCorrectDisplayBool] = useState<boolean>(false)
 
   function handleButtonClick({ word }: WordProps) {
     checkClick({ word: word })
@@ -102,7 +103,7 @@ export function ConnectionsApp() {
 
   function correct() {
     setWords(words.filter(word => !selectedWords.includes(word)))
-    correct1 = true
+    setCorrectDisplayBool(true)
     deselectAll()
   }
 
@@ -132,6 +133,7 @@ export function ConnectionsApp() {
       }}
     >
       <div>
+        {correctDisplayBool && <CorrectDisplay />}
         <ConnectionsGrid
           selectedWords={selectedWords}
           selectedFull={selectedFull}
