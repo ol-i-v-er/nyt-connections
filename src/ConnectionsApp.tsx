@@ -103,27 +103,20 @@ export function ConnectionsApp() {
   }
 
   function correct() {
-    setWords(
-      words.map((innerArr) =>
-        innerArr.filter((value) => !selectedWords.includes(value))
-      )
-    )
-    deselectAll()
-  }
-
-  function removeSpace() {
+    let temp:string[][] = []
     for (let i = 0; i < words.length; i++) {
-      if (words[i].length < 4) {
-        for (let j = 0; j < words[i].length; j++) {
-          words[i].push(words[i + 1].pop)
-        }
+      let filteredWords = words[i].filter(word => !selectedWords.includes(word));
+      temp.push(filteredWords)
+    }
+    for (let i = temp.length; i >= 0; i--) {
+      if(temp[i].length < 4 && i > 0) {
+        temp.push(temp[i - 1].pop())
       }
     }
-  }
 
-  useEffect(() => {
-    removeSpace()
-  }, [words])
+    setWords(temp)
+    deselectAll()
+  }
 
   function incorrect() {
     setMistakesLeft((mistakesLeft -= 1))
