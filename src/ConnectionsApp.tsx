@@ -150,7 +150,11 @@ export function ConnectionsApp() {
     >
       <div>
         {correctDisplayBool && (
-          <CorrectDisplay selectedWords={selectedWords} category={category} />
+          <CorrectDisplay
+            selectedWords={selectedWords}
+            category={category}
+            deselectAll={deselectAll}
+          />
         )}
         <ConnectionsGrid
           selectedWords={selectedWords}
