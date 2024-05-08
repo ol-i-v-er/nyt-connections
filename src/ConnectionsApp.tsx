@@ -10,17 +10,29 @@ type WordProps = {
 
 export function ConnectionsApp() {
   const [words, setWords] = useState<string[]>([
-    "AA", "AB", "AC", "AD",
-    "BA", "BB", "BC", "BD",
-    "CA", "CB", "CC", "CD",
-    "DA", "DB", "DC", "DD"
+    "AA",
+    "AB",
+    "AC",
+    "AD",
+    "BA",
+    "BB",
+    "BC",
+    "BD",
+    "CA",
+    "CB",
+    "CC",
+    "CD",
+    "DA",
+    "DB",
+    "DC",
+    "DD",
   ])
 
-  const wordsCopy = [
-    ["AA", "AB", "AC", "AD"],
-    ["BA", "BB", "BC", "BD"],
-    ["CA", "CB", "CC", "CD"],
-    ["DA", "DB", "DC", "DD"],
+  const wordsKey = [
+    { words: ["AA", "AB", "AC", "AD"], category: "A" },
+    { words: ["BA", "BB", "BC", "BD"], category: "B" },
+    { words: ["CA", "CB", "CC", "CD"], category: "C" },
+    { words: ["DA", "DB", "DC", "DD"], category: "D" },
   ]
 
   const [selectedWords, setSelectedWords] = useState<string[]>([])
@@ -30,6 +42,7 @@ export function ConnectionsApp() {
   let [mistakesLeft, setMistakesLeft] = useState<number>(4)
   let lose = false
   let [correctDisplayBool, setCorrectDisplayBool] = useState<boolean>(false)
+  let [category, setCategory] = useState<string>("")
 
   function handleButtonClick({ word }: WordProps) {
     checkClick({ word: word })
@@ -65,7 +78,7 @@ export function ConnectionsApp() {
   }, [selectedWords, selectedFull])
 
   function shuffleGrid() {
-    const wordsCopyShuf = JSON.parse(JSON.stringify(words));
+    const wordsCopyShuf = JSON.parse(JSON.stringify(words))
 
     for (let i = wordsCopyShuf.length - 1; i > 0; i--) {
       const i2 = Math.floor(Math.random() * (i + 1))
@@ -85,13 +98,17 @@ export function ConnectionsApp() {
     let match = false
 
     selectedWordsGuess.sort()
-    for (let i = 0; i < wordsCopy.length; i++) {
-      wordsCopy[i].sort()
+    for (let i = 0; i < wordsKey.length; i++) {
+      wordsKey[i].words.sort()
     }
 
-    for (let i = 0; i < words.length; i++) {
-      if (JSON.stringify(wordsCopy[i]) === JSON.stringify(selectedWordsGuess))
+    for (let i = 0; i < wordsKey.length; i++) {
+      if (
+        JSON.stringify(wordsKey[i].words) === JSON.stringify(selectedWordsGuess)
+      ) {
         match = true
+        setCategory(wordsKey[i].category)
+      }
     }
 
     if (match) {
@@ -102,9 +119,8 @@ export function ConnectionsApp() {
   }
 
   function correct() {
-    setWords(words.filter(word => !selectedWords.includes(word)))
+    setWords(words.filter((word) => !selectedWords.includes(word)))
     setCorrectDisplayBool(true)
-    deselectAll()
   }
 
   function incorrect() {
@@ -133,7 +149,9 @@ export function ConnectionsApp() {
       }}
     >
       <div>
-        {correctDisplayBool && <CorrectDisplay />}
+        {correctDisplayBool && (
+          <CorrectDisplay selectedWords={selectedWords} category={category} />
+        )}
         <ConnectionsGrid
           selectedWords={selectedWords}
           selectedFull={selectedFull}
