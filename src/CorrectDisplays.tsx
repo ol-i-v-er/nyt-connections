@@ -1,30 +1,29 @@
 import styles from "./Connections.module.css"
 
 type CorrectDisplayProps = {
-  selectedWords: string[]
   category: string
   deselectAll: () => void
+  correctList: string[]
 }
 
 export function CorrectDisplay({
-  selectedWords,
   category,
   deselectAll,
+  correctList,
 }: CorrectDisplayProps) {
-  const selectedWordsCopy = selectedWords
   const categoryCopy = category
-  deselectAll()
+  //deselectAll()
   return (
     <div className={`${styles.correctDisplay}`}>
       <div>{categoryCopy}</div>
       <div style={{ fontWeight: "normal", fontSize: "1.5rem" }}>
-        {selectedWordsCopy[0] +
+        {correctList[0] +
           ", " +
-          selectedWordsCopy[1] +
+          correctList[1] +
           ", " +
-          selectedWordsCopy[2] +
+          correctList[2] +
           ", " +
-          selectedWordsCopy[3]}
+          correctList[3]}
       </div>
     </div>
   )

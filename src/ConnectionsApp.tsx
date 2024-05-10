@@ -43,6 +43,7 @@ export function ConnectionsApp() {
   let lose = false
   let [correctDisplayBool, setCorrectDisplayBool] = useState<boolean>(false)
   let [category, setCategory] = useState<string>("")
+  let [correctList, setCorrectList] = useState<string[]>([])
 
   function handleButtonClick({ word }: WordProps) {
     checkClick({ word: word })
@@ -108,6 +109,7 @@ export function ConnectionsApp() {
       ) {
         match = true
         setCategory(wordsKey[i].category)
+        setCorrectList(wordsKey[i].words)
       }
     }
 
@@ -121,6 +123,7 @@ export function ConnectionsApp() {
   function correct() {
     setWords(words.filter((word) => !selectedWords.includes(word)))
     setCorrectDisplayBool(true)
+    deselectAll()
   }
 
   function incorrect() {
@@ -151,9 +154,9 @@ export function ConnectionsApp() {
       <div>
         {correctDisplayBool && (
           <CorrectDisplay
-            selectedWords={selectedWords}
             category={category}
             deselectAll={deselectAll}
+            correctList={correctList}
           />
         )}
         <ConnectionsGrid

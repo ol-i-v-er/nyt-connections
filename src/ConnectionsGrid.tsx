@@ -19,6 +19,7 @@ export function ConnectionsGrid({
   words,
   shuffleGrid,
 }: ConnectionsGridProps) {
+  //shuffleGrid()
   return (
     <div>
       <div
