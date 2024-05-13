@@ -29,21 +29,24 @@ export function ConnectionsApp() {
   ])
 
   const wordsKey = [
-    { words: ["AA", "AB", "AC", "AD"], category: "A" },
-    { words: ["BA", "BB", "BC", "BD"], category: "B" },
-    { words: ["CA", "CB", "CC", "CD"], category: "C" },
-    { words: ["DA", "DB", "DC", "DD"], category: "D" },
+    { words: ["AA", "AB", "AC", "AD"], category: "A", difficulty: 1 },
+    { words: ["BA", "BB", "BC", "BD"], category: "B", difficulty: 2 },
+    { words: ["CA", "CB", "CC", "CD"], category: "C", difficulty: 3 },
+    { words: ["DA", "DB", "DC", "DD"], category: "D", difficulty: 4 },
   ]
 
   const [selectedWords, setSelectedWords] = useState<string[]>([])
   let [selectedFull, setSelectedFull] = useState<boolean>(false)
   const isInactiveDS = selectedWords.length === 0
   const isInactiveS = selectedWords.length !== 4
+  const isActiveS = selectedWords.length === 4
   let [mistakesLeft, setMistakesLeft] = useState<number>(4)
   let lose = false
   let [correctDisplayBool, setCorrectDisplayBool] = useState<boolean>(false)
   let [category, setCategory] = useState<string>("")
   let [correctList, setCorrectList] = useState<string[]>([])
+  let [difficulty, setDifficulty] = useState<number>(0)
+  let [correctCount, setCorrectCount] = useState<number>(0)
 
   function handleButtonClick({ word }: WordProps) {
     checkClick({ word: word })
@@ -110,6 +113,7 @@ export function ConnectionsApp() {
         match = true
         setCategory(wordsKey[i].category)
         setCorrectList(wordsKey[i].words)
+        setDifficulty(wordsKey[i].difficulty)
       }
     }
 
@@ -122,6 +126,7 @@ export function ConnectionsApp() {
 
   function correct() {
     setWords(words.filter((word) => !selectedWords.includes(word)))
+    setCorrectCount(correctCount += 1)
     setCorrectDisplayBool(true)
     deselectAll()
   }
@@ -152,19 +157,17 @@ export function ConnectionsApp() {
       }}
     >
       <div>
-        {correctDisplayBool && (
-          <CorrectDisplay
+        <CorrectDisplay
             category={category}
-            deselectAll={deselectAll}
             correctList={correctList}
-          />
-        )}
+            difficulty={difficulty}
+            correctCount={correctCount}
+        />
         <ConnectionsGrid
           selectedWords={selectedWords}
           selectedFull={selectedFull}
           handleButtonClick={handleButtonClick}
           words={words}
-          shuffleGrid={shuffleGrid}
         />
       </div>
       <div style={{ display: "flex", marginTop: "10px" }}>
@@ -192,7 +195,7 @@ export function ConnectionsApp() {
         <button
           className={`${styles.btnGeneral} ${
             isInactiveS ? styles.inactive : ""
-          }`}
+          } ${isActiveS ? styles.active : ""}`}
           disabled={isInactiveS}
           onClick={() => submitGuess()}
         >

@@ -9,7 +9,6 @@ type ConnectionsGridProps = {
   selectedFull: boolean
   handleButtonClick: ({ word }: WordProps) => void
   words: string[]
-  shuffleGrid: () => void
 }
 
 export function ConnectionsGrid({
@@ -17,9 +16,7 @@ export function ConnectionsGrid({
   selectedFull,
   handleButtonClick,
   words,
-  shuffleGrid,
 }: ConnectionsGridProps) {
-  //shuffleGrid()
   return (
     <div>
       <div

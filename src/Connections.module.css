@@ -3,7 +3,7 @@
   border: 0px;
   border-radius: 8px;
   background-color: #f1f2ea;
-  aspect-ratio: 2 / 1;
+  height: 100px;
   font-size: 2rem;
   font-weight: bold;
   cursor: pointer;
@@ -52,7 +52,13 @@
   opacity: 0.3;
 }
 
-.btnGeneral:hover:not(:disabled) {
+.btnGeneral.active {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+.btnGeneral:hover:not(:disabled):not(.active) {
   background-color: #f1f2ea;
   cursor: pointer;
 }
@@ -61,8 +67,7 @@
   width: 100%;
   border: 0px;
   border-radius: 8px;
-  background-color: #e1ff00;
-  aspect-ratio: 8 / 1;
+  height: 100px;
   font-size: 2.5rem;
   font-weight: bold;
   color: black;
@@ -73,4 +78,20 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
+}
+
+.difficulty1 {
+  background-color: #91ce7e;
+}
+
+.difficulty2 {
+  background-color: #96d3eb;
+}
+
+.difficulty3 {
+  background-color: #ebe483;
+}
+
+.difficulty4 {
+  background-color: #bb7ece;
 }
