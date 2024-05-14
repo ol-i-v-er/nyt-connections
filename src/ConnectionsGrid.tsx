@@ -29,8 +29,9 @@ export function ConnectionsGrid({
         }}
       >
         {words.map((cell, index) => {
-          const isActive = selectedWords.includes(cell);
-          const isInactive = (!selectedWords.includes(cell) && selectedFull) || lose;
+          const isActive = selectedWords.includes(cell)
+          const isInactive =
+            (!selectedWords.includes(cell) && selectedFull) || lose
           return (
             <button
               key={index}
@@ -42,10 +43,9 @@ export function ConnectionsGrid({
             >
               {cell}
             </button>
-          );
+          )
         })}
       </div>
     </div>
-  );
-  
+  )
 }

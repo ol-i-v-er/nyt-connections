@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { ConnectionsGrid } from "./ConnectionsGrid"
 import { ConnectionsDots } from "./ConnectionsDots"
 import { CorrectDisplay } from "./CorrectDisplays"
+import { ConnectionsModal } from "./ConnectionsModal"
 import styles from "./Connections.module.css"
 
 type WordProps = {
@@ -16,7 +17,7 @@ export type CorrectDisplayProps = {
 }
 
 export function ConnectionsApp() {
-  const [words, setWords] = useState<string[]>([
+  const [wordsTest, setWordsTest] = useState<string[]>([
     "AA",
     "AB",
     "AC",
@@ -35,12 +36,54 @@ export function ConnectionsApp() {
     "DD",
   ])
 
-  const wordsKey = [
+  const wordsKeyTest = [
     { words: ["AA", "AB", "AC", "AD"], category: "A", difficulty: 1 },
     { words: ["BA", "BB", "BC", "BD"], category: "B", difficulty: 2 },
     { words: ["CA", "CB", "CC", "CD"], category: "C", difficulty: 3 },
     { words: ["DA", "DB", "DC", "DD"], category: "D", difficulty: 4 },
   ]
+
+  const wordsKey = [
+    {
+      words: ["Jake", "Gavin", "Will", "Tristan"],
+      category: "CS3 Students",
+      difficulty: 1,
+    },
+    {
+      words: ["Java", "Python", "Assembly", "JavaScript"],
+      category: "Programming Languages",
+      difficulty: 2,
+    },
+    {
+      words: ["Windows", "MacOS", "Linux", "Android"],
+      category: "Operating Systems",
+      difficulty: 3,
+    },
+    {
+      words: ["Texas A&M", "UT Austin", "Harvard", "MIT"],
+      category: "Universities",
+      difficulty: 4,
+    },
+  ]
+
+  const [words, setWords] = useState<string[]>([
+    wordsKey[0].words[0],
+    wordsKey[0].words[1],
+    wordsKey[0].words[2],
+    wordsKey[0].words[3],
+    wordsKey[1].words[0],
+    wordsKey[1].words[1],
+    wordsKey[1].words[2],
+    wordsKey[1].words[3],
+    wordsKey[2].words[0],
+    wordsKey[2].words[1],
+    wordsKey[2].words[2],
+    wordsKey[2].words[3],
+    wordsKey[3].words[0],
+    wordsKey[3].words[1],
+    wordsKey[3].words[2],
+    wordsKey[3].words[3],
+  ])
 
   const [selectedWords, setSelectedWords] = useState<string[]>([])
   let [selectedFull, setSelectedFull] = useState<boolean>(false)
@@ -50,9 +93,19 @@ export function ConnectionsApp() {
   let [mistakesLeft, setMistakesLeft] = useState<number>(4)
   let [correctDisplayBool, setCorrectDisplayBool] = useState<boolean>(false)
   let [correctCount, setCorrectCount] = useState<number>(0)
-  let [correctArray, setCorrectArray] = useState<CorrectDisplayProps[]>([{category:"", correctList: [], difficulty: 0, correctCount: 0},{category:"", correctList: [], difficulty: 0, correctCount: 0},{category:"", correctList: [], difficulty: 0, correctCount: 0},{category:"", correctList: [], difficulty: 0, correctCount: 0}])
-  let lose = mistakesLeft < 0
+  let [correctArray, setCorrectArray] = useState<CorrectDisplayProps[]>([
+    { category: "", correctList: [], difficulty: 0, correctCount: 0 },
+    { category: "", correctList: [], difficulty: 0, correctCount: 0 },
+    { category: "", correctList: [], difficulty: 0, correctCount: 0 },
+    { category: "", correctList: [], difficulty: 0, correctCount: 0 },
+  ])
+  //let lose = mistakesLeft < 1
+  let lose = mistakesLeft < 1
   let win = correctCount > 3
+
+  useEffect(() => {
+    shuffleGrid()
+  }, [])
 
   function handleButtonClick({ word }: WordProps) {
     checkClick({ word: word })
@@ -118,9 +171,9 @@ export function ConnectionsApp() {
       ) {
         match = true
         const newArray = [...correctArray]
-        newArray[correctCount].category = (wordsKey[i].category)
-        newArray[correctCount].correctList = (wordsKey[i].words)
-        newArray[correctCount].difficulty = (wordsKey[i].difficulty)
+        newArray[correctCount].category = wordsKey[i].category
+        newArray[correctCount].correctList = wordsKey[i].words
+        newArray[correctCount].difficulty = wordsKey[i].difficulty
         setCorrectArray(newArray)
       }
     }
@@ -134,7 +187,7 @@ export function ConnectionsApp() {
 
   function correct() {
     setWords(words.filter((word) => !selectedWords.includes(word)))
-    setCorrectCount(correctCount += 1)
+    setCorrectCount((correctCount += 1))
     setCorrectDisplayBool(true)
     deselectAll()
   }
@@ -142,16 +195,7 @@ export function ConnectionsApp() {
   function incorrect() {
     setMistakesLeft((mistakesLeft -= 1))
     deselectAll()
-    if(lose) {
-      alert("its joever buddy")
-    }
   }
-
-  useEffect(() => {
-    if (correctCount > 3) {
-      win = true
-    }
-  }, [correctCount])
 
   function deselectAll() {
     setSelectedWords([])
@@ -168,7 +212,7 @@ export function ConnectionsApp() {
       }}
     >
       <div>
-        {correctDisplayBool && <CorrectDisplay array={correctArray}/>}
+        {correctDisplayBool && <CorrectDisplay array={correctArray} />}
         <ConnectionsGrid
           selectedWords={selectedWords}
           selectedFull={selectedFull}
@@ -183,10 +227,13 @@ export function ConnectionsApp() {
           <ConnectionsDots mistakesLeft={mistakesLeft} />
         </div>
       </div>
-      <div style={{ width: "300px", marginTop: "10px", textAlign: "center" }}>
+      <div style={{ width: "400px", marginTop: "10px", textAlign: "center" }}>
         <button
           onClick={() => shuffleGrid()}
-          className={`${styles.btnGeneral}`}
+          className={`${styles.btnGeneral} ${lose ? styles.inactive : ""} ${
+            win ? styles.inactive : ""
+          }`}
+          disabled={lose || win}
         >
           Shuffle
         </button>
@@ -208,6 +255,7 @@ export function ConnectionsApp() {
         >
           Submit
         </button>
+        <ConnectionsModal lose={lose} win={win} />
       </div>
     </div>
   )
