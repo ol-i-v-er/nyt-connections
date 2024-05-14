@@ -1,42 +1,33 @@
 import styles from "./Connections.module.css"
-import { useState, useEffect } from "react"
+import { CorrectDisplayProps } from "./ConnectionsApp"
 
-type CorrectDisplayProps = {
-  category: string
-  correctList: string[]
-  difficulty: number
-  correctCount: number
+type CorrectDisplayPropsArray = {
+  array: CorrectDisplayProps[]
 }
 
 export function CorrectDisplay({
-  category,
-  correctList,
-  difficulty,
-  correctCount,
-}: CorrectDisplayProps) {
+ array
+}: CorrectDisplayPropsArray) {
 
-  const correctDisplayArray = Array.from({ length: correctCount }, (_, index) => index)
-
-  return (
-    <div>{correctDisplayArray.map((_, index) => (
-      <div key={index} 
-          className={`${styles.correctDisplay} 
-          ${difficulty === 1 ? styles.difficulty1 : ""} 
-          ${difficulty === 2 ? styles.difficulty2 : ""} 
-          ${difficulty === 3 ? styles.difficulty3 : ""} 
-          ${difficulty === 4 ? styles.difficulty4 : ""}`}>
-        <div>{category}</div>
-        <div style={{ fontWeight: "normal", fontSize: "1.5rem" }}>
-          {correctList[0] +
-            ", " +
-            correctList[1] +
-            ", " +
-            correctList[2] +
-            ", " +
-            correctList[3]}
-        </div>
+  const items = array.filter((display: CorrectDisplayProps) => {return display.difficulty !== 0})
+  .map((display: CorrectDisplayProps, index: number) => (
+    <div key={index} 
+        className={`${styles.correctDisplay} 
+        ${array[index].difficulty === 1 ? styles.difficulty1 : ""} 
+        ${array[index].difficulty === 2 ? styles.difficulty2 : ""} 
+        ${array[index].difficulty === 3 ? styles.difficulty3 : ""} 
+        ${array[index].difficulty === 4 ? styles.difficulty4 : ""}`}>
+      <div>{array[index].category}</div>
+      <div style={{ fontWeight: "normal", fontSize: "1.5rem" }}>
+        {array[index].correctList[0] +
+          ", " +
+          array[index].correctList[1] +
+          ", " +
+          array[index].correctList[2] +
+          ", " +
+          array[index].correctList[3]}
       </div>
-      ))}
     </div>
-  )
+  ))
+  return <div>{items}</div>
 }

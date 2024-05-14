@@ -8,6 +8,13 @@ type WordProps = {
   word: string
 }
 
+export type CorrectDisplayProps = {
+  category: string
+  correctList: string[]
+  difficulty: number
+  correctCount: number
+}
+
 export function ConnectionsApp() {
   const [words, setWords] = useState<string[]>([
     "AA",
@@ -41,12 +48,11 @@ export function ConnectionsApp() {
   const isInactiveS = selectedWords.length !== 4
   const isActiveS = selectedWords.length === 4
   let [mistakesLeft, setMistakesLeft] = useState<number>(4)
-  let lose = false
   let [correctDisplayBool, setCorrectDisplayBool] = useState<boolean>(false)
-  let [category, setCategory] = useState<string>("")
-  let [correctList, setCorrectList] = useState<string[]>([])
-  let [difficulty, setDifficulty] = useState<number>(0)
   let [correctCount, setCorrectCount] = useState<number>(0)
+  let [correctArray, setCorrectArray] = useState<CorrectDisplayProps[]>([{category:"", correctList: [], difficulty: 0, correctCount: 0},{category:"", correctList: [], difficulty: 0, correctCount: 0},{category:"", correctList: [], difficulty: 0, correctCount: 0},{category:"", correctList: [], difficulty: 0, correctCount: 0}])
+  let lose = mistakesLeft < 0
+  let win = correctCount > 3
 
   function handleButtonClick({ word }: WordProps) {
     checkClick({ word: word })
@@ -111,9 +117,11 @@ export function ConnectionsApp() {
         JSON.stringify(wordsKey[i].words) === JSON.stringify(selectedWordsGuess)
       ) {
         match = true
-        setCategory(wordsKey[i].category)
-        setCorrectList(wordsKey[i].words)
-        setDifficulty(wordsKey[i].difficulty)
+        const newArray = [...correctArray]
+        newArray[correctCount].category = (wordsKey[i].category)
+        newArray[correctCount].correctList = (wordsKey[i].words)
+        newArray[correctCount].difficulty = (wordsKey[i].difficulty)
+        setCorrectArray(newArray)
       }
     }
 
@@ -134,13 +142,16 @@ export function ConnectionsApp() {
   function incorrect() {
     setMistakesLeft((mistakesLeft -= 1))
     deselectAll()
+    if(lose) {
+      alert("its joever buddy")
+    }
   }
 
   useEffect(() => {
-    if (mistakesLeft === 0) {
-      lose = true
+    if (correctCount > 3) {
+      win = true
     }
-  }, [mistakesLeft])
+  }, [correctCount])
 
   function deselectAll() {
     setSelectedWords([])
@@ -157,17 +168,13 @@ export function ConnectionsApp() {
       }}
     >
       <div>
-        <CorrectDisplay
-            category={category}
-            correctList={correctList}
-            difficulty={difficulty}
-            correctCount={correctCount}
-        />
+        {correctDisplayBool && <CorrectDisplay array={correctArray}/>}
         <ConnectionsGrid
           selectedWords={selectedWords}
           selectedFull={selectedFull}
           handleButtonClick={handleButtonClick}
           words={words}
+          lose={lose}
         />
       </div>
       <div style={{ display: "flex", marginTop: "10px" }}>

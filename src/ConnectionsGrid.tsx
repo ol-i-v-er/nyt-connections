@@ -9,6 +9,7 @@ type ConnectionsGridProps = {
   selectedFull: boolean
   handleButtonClick: ({ word }: WordProps) => void
   words: string[]
+  lose: boolean
 }
 
 export function ConnectionsGrid({
@@ -16,6 +17,7 @@ export function ConnectionsGrid({
   selectedFull,
   handleButtonClick,
   words,
+  lose,
 }: ConnectionsGridProps) {
   return (
     <div>
@@ -28,7 +30,7 @@ export function ConnectionsGrid({
       >
         {words.map((cell, index) => {
           const isActive = selectedWords.includes(cell);
-          const isInactive = !selectedWords.includes(cell) && selectedFull;
+          const isInactive = (!selectedWords.includes(cell) && selectedFull) || lose;
           return (
             <button
               key={index}
@@ -36,6 +38,7 @@ export function ConnectionsGrid({
               className={`${styles.btnGrid} 
                 ${isActive ? styles.active : ""} 
                 ${isInactive ? styles.inactive : ""}`}
+              disabled={lose}
             >
               {cell}
             </button>
