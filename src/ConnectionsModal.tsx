@@ -1,6 +1,6 @@
 import { useDisclosure } from "@mantine/hooks"
 import { Modal, Button } from "@mantine/core"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import styles from "./Connections.module.css"
 
 type ConnectionsModalProps = {
@@ -11,12 +11,15 @@ type ConnectionsModalProps = {
 export function ConnectionsModal({ lose, win }: ConnectionsModalProps) {
   const [opened, handlers] = useDisclosure(false)
   const isInactive = !win && !lose
+  let [timeoutBool, setTimeoutBool] = useState<boolean>(true)
 
-  setTimeout(() => {
-    if (lose || win) {
-      handlers.open()
-    }
-  }, 700)
+  if (timeoutBool)
+    setTimeout(() => {
+      if (lose || win) {
+        handlers.open()
+        setTimeoutBool(false)
+      }
+    }, 700)
 
   return (
     <>
