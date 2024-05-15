@@ -9,16 +9,23 @@ type ConnectionsModalProps = {
 }
 
 export function ConnectionsModal({ lose, win }: ConnectionsModalProps) {
-  const [opened, { open, close }] = useDisclosure(false)
+  const [opened, handlers] = useDisclosure(false)
   const isInactive = !win && !lose
+
+  setTimeout(() => {
+    if (lose || win) {
+      handlers.open()
+    }
+  }, 700)
 
   return (
     <>
       <Modal
         opened={opened}
-        onClose={close}
+        onClose={handlers.close}
         title="Results"
         size="lg"
+        centered
         overlayProps={{
           backgroundOpacity: 0.55,
           blur: 3,
@@ -32,7 +39,7 @@ export function ConnectionsModal({ lose, win }: ConnectionsModalProps) {
       <button
         className={`${styles.btnGeneral} ${isInactive ? styles.inactive : ""}`}
         disabled={isInactive}
-        onClick={open}
+        onClick={() => handlers.open()}
       >
         Results
       </button>
