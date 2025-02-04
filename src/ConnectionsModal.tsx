@@ -11,15 +11,15 @@ type ConnectionsModalProps = {
 export function ConnectionsModal({ lose, win }: ConnectionsModalProps) {
   const [opened, handlers] = useDisclosure(false)
   const isInactive = !win && !lose
-  let [timeoutBool, setTimeoutBool] = useState<boolean>(true)
+  let [autoShowModal, setAutoShowModal] = useState<boolean>(true)
 
-  if (timeoutBool)
+  if (autoShowModal)
     setTimeout(() => {
       if (lose || win) {
         handlers.open()
-        setTimeoutBool(false)
+        setAutoShowModal(false)
       }
-    }, 700)
+    }, 500)
 
   return (
     <>
